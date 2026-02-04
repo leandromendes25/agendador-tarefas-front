@@ -4,18 +4,16 @@
       <mat-card-title>Cadastro de Usuário</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field class="full-width">
         <mat-label>Nome Completo</mat-label>
-        <input matInput placeholder="Digite seu nome completo" />
+        <input matInput placeholder="Digite o seu nome completo" />
       </mat-form-field>
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Digite seu email</mat-label>
-        <input matInput placeholder="Digite seu email" />
+      <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput />
       </mat-form-field>
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Senha</mat-label>
-        <input matInput type="password" placeholder="Digite sua senha" />
-      </mat-form-field>
+
+      <app-password-field></app-password-field>
     </mat-card-content>
     <mat-card-actions>
       <button matButton="elevated">Basic</button>

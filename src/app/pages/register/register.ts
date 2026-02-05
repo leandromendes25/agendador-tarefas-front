@@ -5,7 +5,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PasswordField } from '../../shared/components/password-field/password-field';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 @Component({
   selector: 'app-register',
   imports: [
@@ -25,15 +31,19 @@ export class Register {
   form: FormGroup;
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
-      fullName: [''],
-      email: [''],
-      password: [''],
+      fullName: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
   }
   get passwordControl(): FormControl {
     return this.form.get('password') as FormControl;
   }
   submit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     console.log(this.form.value);
   }
 }

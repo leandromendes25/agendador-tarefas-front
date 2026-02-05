@@ -12,6 +12,7 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-register',
   imports: [
@@ -22,6 +23,7 @@ import {
     MatSelectModule,
     PasswordField,
     ReactiveFormsModule,
+    CommonModule,
   ],
   templateUrl: './register.html',
   styleUrl: './register.scss',

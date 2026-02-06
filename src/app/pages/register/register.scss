@@ -1,0 +1,22 @@
+.register-compoent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+  button {
+    width: 100%;
+  }
+}
+.register-compoent mat-card {
+  width: 400px;
+  padding: 20px;
+  box-shadow: none;
+  background-color: #f5f5f5;
+}
+.register-compoent .mat-mdc-text-field-wrapper {
+  border-radius: 25px;
+  .mdc-line-ripple {
+    display: none;
+  }
+}

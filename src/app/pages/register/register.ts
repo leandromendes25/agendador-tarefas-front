@@ -13,6 +13,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { User } from '../../services/user';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 @Component({
   selector: 'app-register',
   imports: [
@@ -24,6 +28,7 @@ import { CommonModule } from '@angular/common';
     PasswordField,
     ReactiveFormsModule,
     CommonModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './register.html',
   styleUrl: './register.scss',
@@ -31,18 +36,24 @@ import { CommonModule } from '@angular/common';
 })
 export class Register {
   form: FormGroup;
-  constructor(private formBuilder: FormBuilder) {
+  isLoading = false;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: User,
+    private router: Router,
+  ) {
     this.form = this.formBuilder.group({
-      fullName: ['', [Validators.required, Validators.minLength(3)]],
+      nome: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      senha: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
   get passwordControl(): FormControl {
-    return this.form.get('password') as FormControl;
+    return this.form.get('senha') as FormControl;
   }
   get fullNameErrors(): string | null {
-    const control = this.form.get('fullName');
+    const control = this.form.get('nome');
     if (control?.hasError('required')) return 'O nome completo é obrigatório.';
     if (control?.hasError('minlength')) return 'O nome completo deve ter no mínimo 3 caracteres.';
     return null;
@@ -54,7 +65,7 @@ export class Register {
     return null;
   }
   get senhaErrors(): string | null {
-    const control = this.form.get('fullName');
+    const control = this.form.get('nome');
     if (control?.hasError('required')) return '';
     if (control?.hasError('minlength')) return 'O nome completo deve ter no mínimo 3 caracteres.';
     return null;
@@ -64,6 +75,19 @@ export class Register {
       this.form.markAllAsTouched();
       return;
     }
-    console.log(this.form.value);
+    this.isLoading = true;
+    const formData = this.form.value;
+    //finalize pq o complete não pega, o finalize é rxjs, ele é chamado quando a stream é finalizada, seja por sucesso ou erro, então ele garante que o isLoading seja setado para false em ambos os casos
+    this.userService
+      .register(formData)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (response) => {
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error('Erro ao registrar usuário:', error);
+        },
+      });
   }
 }

@@ -25,7 +25,7 @@ export class PasswordField {
     event.stopPropagation();
   }
   get passwordErrors(): string | null {
-    const control = this.control.get('password');
+    const control = this.control.get('senha');
     if (control?.hasError('required')) return 'O cadastro da senha é obrigatório.';
     if (control?.hasError('minlength')) return 'O nome completo deve ter no mínimo 6 caracteres.';
     return null;

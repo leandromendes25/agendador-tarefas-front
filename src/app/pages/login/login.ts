@@ -13,12 +13,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { User } from '../../services/user';
+import { User, UserLoginPayload } from '../../services/user';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
+
 @Component({
-  selector: 'app-register',
+  selector: 'app-login',
   imports: [
     MatCardModule,
     MatButtonModule,
@@ -30,37 +31,35 @@ import { finalize } from 'rxjs';
     CommonModule,
     MatProgressSpinnerModule,
   ],
-  templateUrl: './register.html',
-  styleUrl: './register.scss',
+  templateUrl: './login.html',
+  styleUrl: './login.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class Register {
-  form: FormGroup;
+export class Login {
+  form: FormGroup<{ email: FormControl<string>; senha: FormControl<string> }>;
   isLoading = false;
-
   constructor(
     private formBuilder: FormBuilder,
     private userService: User,
     private router: Router,
   ) {
     this.form = this.formBuilder.group({
-      nome: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      senha: ['', [Validators.required, Validators.minLength(6)]],
+      email: this.formBuilder.control('', {
+        validators: [Validators.required, Validators.email],
+        nonNullable: true,
+      }),
+      senha: this.formBuilder.control('', {
+        validators: [Validators.required, Validators.minLength(6)],
+        nonNullable: true,
+      }),
     });
   }
   get passwordControl(): FormControl {
     return this.form.get('senha') as FormControl;
   }
-  get fullNameErrors(): string | null {
-    const control = this.form.get('nome');
-    if (control?.hasError('required')) return 'O nome completo é obrigatório.';
-    if (control?.hasError('minlength')) return 'O nome completo deve ter no mínimo 3 caracteres.';
-    return null;
-  }
   get emailErrors(): string | null {
     const control = this.form.get('email');
-    if (control?.hasError('required')) return 'O email é obrigatório.';
+    if (control?.hasError('required')) return 'A informação do e-mail é obrigatório.';
     if (control?.hasError('email')) return 'O email informado não é válido.';
     return null;
   }
@@ -76,16 +75,16 @@ export class Register {
       return;
     }
     this.isLoading = true;
-    const formData = this.form.value;
+    const formData = this.form.value as UserLoginPayload;
     this.userService
-      .register(formData)
+      .login(formData)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (response) => {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/']);
         },
         error: (error) => {
-          console.error('Erro ao registrar usuário:', error);
+          console.error('Erro ao entrar:', error);
         },
       });
   }

@@ -8,7 +8,7 @@
   <a matButton>Preços</a>
   <a matButton>Contato</a>
   <span class="spacer"></span>
-  <button matButton>Entrar</button>
+  <button [disabled]="estaNaRotaLogin()" matButton routerLink="/login">Entrar</button>
   <button mat-flat-button [disabled]="estaNaRotaRegister()" routerLink="/register">
     Cadastra-se
   </button>

@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class PasswordField {
   @Input({ required: true }) control!: FormControl;
+  @Input() placeholder = 'Digite sua senha';
   hide = signal(true);
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
@@ -26,8 +27,8 @@ export class PasswordField {
   }
   get passwordErrors(): string | null {
     const control = this.control.get('senha');
-    if (control?.hasError('required')) return 'O cadastro da senha é obrigatório.';
-    if (control?.hasError('minlength')) return 'O nome completo deve ter no mínimo 6 caracteres.';
+    if (control?.hasError('required')) return 'A senha é obrigatória.';
+    if (control?.hasError('minlength')) return 'A senha deve conter no mínimo 6 caracteres.';
     return null;
   }
 }

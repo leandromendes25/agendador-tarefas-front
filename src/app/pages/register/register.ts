@@ -66,7 +66,7 @@ export class Register {
   }
   get senhaErrors(): string | null {
     const control = this.form.get('senha');
-    if (control?.hasError('required')) return '';
+    if (control?.hasError('required')) return 'A senha é obrigatória.';
     if (control?.hasError('minlength')) return 'A senha deve conter no mínimo 6 caracteres.';
     return null;
   }

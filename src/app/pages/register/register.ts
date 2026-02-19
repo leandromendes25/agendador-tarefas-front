@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
@@ -17,6 +17,7 @@ import { User } from '../../services/user';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
+import { Auth } from '../../services/auth';
 @Component({
   selector: 'app-register',
   imports: [
@@ -34,7 +35,7 @@ import { finalize } from 'rxjs';
   styleUrl: './register.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class Register {
+export class Register implements OnInit {
   form: FormGroup;
   isLoading = false;
 
@@ -42,12 +43,18 @@ export class Register {
     private formBuilder: FormBuilder,
     private userService: User,
     private router: Router,
+    private authService: Auth,
   ) {
     this.form = this.formBuilder.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required, Validators.minLength(6)]],
     });
+  }
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/tasks']);
+    }
   }
   get passwordControl(): FormControl {
     return this.form.get('senha') as FormControl;

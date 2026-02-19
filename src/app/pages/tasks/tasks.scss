@@ -1,0 +1,29 @@
+.tasks-component {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+
+  .task-card {
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 8px rgba(0, 0, 0, 0.8);
+  }
+  .tasks-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    p {
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    button {
+      padding: 12px 24px;
+      font-weight: 600;
+    }
+  }
+}

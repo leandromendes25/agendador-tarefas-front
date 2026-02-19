@@ -14,4 +14,9 @@ export class Auth {
   getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }
+  //!!faz retornar um boolean
+  //se por acaso o getToken retornar algo, irá retornar true
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
@@ -36,7 +36,7 @@ import { Auth } from '../../services/auth';
   styleUrl: './login.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class Login {
+export class Login implements OnInit {
   form: FormGroup<{ email: FormControl<string>; senha: FormControl<string> }>;
   isLoading = false;
   constructor(
@@ -56,6 +56,12 @@ export class Login {
       }),
     });
   }
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/tasks']);
+    }
+  }
+
   get passwordControl(): FormControl {
     return this.form.get('senha') as FormControl;
   }
@@ -84,7 +90,7 @@ export class Login {
       .subscribe({
         next: (response) => {
           this.authService.saveToken(response);
-          this.router.navigate(['/']);
+          this.router.navigate(['/tasks']);
         },
         error: (error) => {
           console.error('Erro ao entrar:', error);
